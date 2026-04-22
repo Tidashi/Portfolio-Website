@@ -33,7 +33,7 @@
     0 20px 60px rgba(0,0,0,0.8),
     0 0 30px rgba(100,60,200,0.3);
   cursor: grab;
-  touch-action: none;
+  touch-action: pan-y;
   animation: pack-float 3s ease-in-out infinite;
 }
 

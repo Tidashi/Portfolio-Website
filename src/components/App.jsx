@@ -8,12 +8,66 @@ window.App = function App() {
   const packRef = useRef(null);
   const dragStartX = useRef(null);
   const isRipping = useRef(false);
+  const tearProgressRef = useRef(0);
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, []);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    let startX = null;
+    let startY = null;
+
+    const onStart = (e) => {
+      if (isRipping.current || packState !== 'sealed') return;
+      const t = e.touches ? e.touches[0] : e;
+      startX = t.clientX;
+      startY = t.clientY;
+    };
+
+    const onMove = (e) => {
+      if (startX === null || isRipping.current || packState !== 'sealed') return;
+      const t = e.touches ? e.touches[0] : e;
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const progress = Math.min(1, dist / 50);
+      tearProgressRef.current = progress;
+      setTearProgress(progress);
+      if (progress >= 1) { startX = null; triggerRip(); }
+    };
+
+    const onEnd = () => {
+      if (isRipping.current || packState !== 'sealed') return;
+      if (tearProgressRef.current >= 0.1) {
+        triggerRip();
+      } else {
+        tearProgressRef.current = 0;
+        setTearProgress(0);
+      }
+      startX = null;
+      startY = null;
+    };
+
+    window.addEventListener('touchstart', onStart);
+    window.addEventListener('touchmove', onMove, { passive: true });
+    window.addEventListener('touchend', onEnd);
+    window.addEventListener('mousedown', onStart);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onEnd);
+
+    return () => {
+      window.removeEventListener('touchstart', onStart);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onEnd);
+      window.removeEventListener('mousedown', onStart);
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onEnd);
+    };
+  }, [isMobile, packState, triggerRip]);
 
   const triggerRip = useCallback(() => {
     if (isRipping.current) return;
@@ -30,26 +84,31 @@ window.App = function App() {
   }, []);
 
   const onPointerDown = useCallback((e) => {
-    if (packState !== 'sealed') return;
-    dragStartX.current = e.touches ? e.touches[0].clientX : e.clientX;
+    if (isRipping.current || packState !== 'sealed') return;
+    const touch = e.touches ? e.touches[0] : e;
+    dragStartX.current = { x: touch.clientX, y: touch.clientY };
+    tearProgressRef.current = 0;
   }, [packState]);
 
   const onPointerMove = useCallback((e) => {
-    if (dragStartX.current === null || packState !== 'sealed') return;
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const rect = packRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const delta = Math.abs(clientX - dragStartX.current);
-    const progress = Math.min(1, delta / (rect.width * 0.65));
+    if (!dragStartX.current || isRipping.current || packState !== 'sealed') return;
+    if (e.cancelable) e.preventDefault();
+    const touch = e.touches ? e.touches[0] : e;
+    const dx = touch.clientX - dragStartX.current.x;
+    const dy = touch.clientY - dragStartX.current.y;
+    const delta = Math.sqrt(dx * dx + dy * dy);
+    const progress = Math.min(1, delta / 50);
+    tearProgressRef.current = progress;
     setTearProgress(progress);
     if (progress >= 1) triggerRip();
   }, [packState, triggerRip]);
 
   const onPointerUp = useCallback(() => {
-    if (packState !== 'sealed') return;
-    if (tearProgress >= 0.35) {
+    if (isRipping.current || packState !== 'sealed') return;
+    if (tearProgressRef.current >= 0.1) {
       triggerRip();
     } else {
+      tearProgressRef.current = 0;
       setTearProgress(0);
       dragStartX.current = null;
     }
@@ -117,13 +176,6 @@ window.App = function App() {
               <div
                 className="booster-pack"
                 ref={packRef}
-                onMouseDown={onPointerDown}
-                onMouseMove={onPointerMove}
-                onMouseUp={onPointerUp}
-                onMouseLeave={onPointerUp}
-                onTouchStart={onPointerDown}
-                onTouchMove={onPointerMove}
-                onTouchEnd={onPointerUp}
               >
                 <PackContent />
 
