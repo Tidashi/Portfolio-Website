@@ -1,6 +1,7 @@
 window.App = function App() {
   const { useState, useEffect, useRef, useCallback } = React;
   const [activeCard, setActiveCard] = useState(null);
+  const [zoomedProject, setZoomedProject] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [packState, setPackState] = useState('sealed');
   const [tearProgress, setTearProgress] = useState(0);
@@ -269,6 +270,70 @@ window.App = function App() {
     );
   }
 
+  const INITIAL_SPOTS = [
+    { x: 0.06, y: 0.14, rotZ: -9,  rotX: 32, scale: 0.72 },
+    { x: 0.26, y: 0.08, rotZ: 5,   rotX: 30, scale: 0.74 },
+    { x: 0.52, y: 0.12, rotZ: -4,  rotX: 31, scale: 0.73 },
+    { x: 0.72, y: 0.07, rotZ: 8,   rotX: 29, scale: 0.71 },
+  ];
+
+  const [tablePositions, setTablePositions] = useState(() =>
+    INITIAL_SPOTS.map(s => ({
+      x: s.x * window.innerWidth,
+      y: s.y * window.innerHeight,
+      rotZ: s.rotZ,
+      rotX: s.rotX,
+      scale: s.scale,
+    }))
+  );
+  const [draggingIndex, setDraggingIndex] = useState(null);
+  const tableDrag = useRef(null);
+
+  useEffect(() => {
+    const onMove = (e) => {
+      if (!tableDrag.current) return;
+      const t = e.touches ? e.touches[0] : e;
+      const { index, startX, startY, origX, origY } = tableDrag.current;
+      setTablePositions(prev => prev.map((p, i) =>
+        i === index ? { ...p, x: origX + (t.clientX - startX), y: origY + (t.clientY - startY) } : p
+      ));
+    };
+
+    const onUp = (e) => {
+      if (!tableDrag.current) return;
+      const t = e.changedTouches ? e.changedTouches[0] : e;
+      const { index, startX, startY } = tableDrag.current;
+      const dist = Math.hypot(t.clientX - startX, t.clientY - startY);
+      if (dist < 6) setZoomedProject(TABLE_CARDS[index]);
+      setDraggingIndex(null);
+      tableDrag.current = null;
+    };
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    window.addEventListener('touchmove', onMove, { passive: true });
+    window.addEventListener('touchend', onUp);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      window.removeEventListener('touchmove', onMove);
+      window.removeEventListener('touchend', onUp);
+    };
+  }, []);
+
+  const startTableDrag = (e, index) => {
+    e.stopPropagation();
+    const t = e.touches ? e.touches[0] : e;
+    tableDrag.current = {
+      index,
+      startX: t.clientX,
+      startY: t.clientY,
+      origX: tablePositions[index].x,
+      origY: tablePositions[index].y,
+    };
+    setDraggingIndex(index);
+  };
+
   return (
     <div className="scene">
       <div className="table-felt" />
@@ -279,6 +344,34 @@ window.App = function App() {
         <div className="header-name">Christopher Tjahjo</div>
         <div className="header-tagline">Software Developer · Builder · Wizard</div>
         <div className="header-rule" />
+      </div>
+
+      <div className="table-cards-layer">
+        {TABLE_CARDS.map((card, i) => {
+          const pos = tablePositions[i];
+          const isDragging = draggingIndex === i;
+          return (
+            <div
+              key={card.id}
+              className={`table-card-spot ${isDragging ? 'is-dragging' : ''}`}
+              style={{
+                left: pos.x + 'px',
+                top:  pos.y + 'px',
+                transform: isDragging
+                  ? `rotateX(8deg) rotateZ(${pos.rotZ * 0.3}deg) scale(${pos.scale + 0.12})`
+                  : `rotateX(${pos.rotX}deg) rotateZ(${pos.rotZ}deg) scale(${pos.scale})`,
+                zIndex: isDragging ? 20 : 3,
+                cursor: isDragging ? 'grabbing' : 'grab',
+                transition: isDragging ? 'none' : 'transform 0.3s ease',
+              }}
+              onMouseDown={(e) => startTableDrag(e, i)}
+              onTouchStart={(e) => startTableDrag(e, i)}
+            >
+              <MTGCard card={card} isPreview={true} />
+              <div className="table-card-label">✦ Drag or click to zoom ✦</div>
+            </div>
+          );
+        })}
       </div>
 
       <div className="player-label">Your Hand</div>
@@ -310,6 +403,10 @@ window.App = function App() {
 
       {activeCard && (
         <CardModal card={activeCard} onClose={() => setActiveCard(null)} />
+      )}
+
+      {zoomedProject && (
+        <ProjectZoom card={zoomedProject} onClose={() => setZoomedProject(null)} />
       )}
     </div>
   );

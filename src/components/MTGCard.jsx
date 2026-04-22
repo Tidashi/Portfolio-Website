@@ -1,4 +1,4 @@
-window.MTGCard = function MTGCard({ card, isPreview }) {
+window.MTGCard = function MTGCard({ card, isPreview, onArtClick }) {
   const { useRef, useCallback } = React;
   const cardRef = useRef(null);
 
@@ -40,9 +40,17 @@ window.MTGCard = function MTGCard({ card, isPreview }) {
             </div>
           </div>
 
-          <div className="card-art-frame">
+          <div
+            className={`card-art-frame ${onArtClick ? 'art-clickable' : ''}`}
+            onClick={onArtClick}
+          >
             <div className={`art-background art-bg-${c}`} />
             <div className="art-emoji">{card.emoji}</div>
+            {onArtClick && (
+              <div className="art-visit-hint">
+                <span>{card.url ? '🌐 Visit Project' : '🔍 View Details'}</span>
+              </div>
+            )}
           </div>
 
           <div className={`card-type-row band-${c}`}>
