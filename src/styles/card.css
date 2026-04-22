@@ -1,0 +1,257 @@
+.mtg-card {
+  width: 220px;
+  height: 308px;
+  border-radius: 11px;
+  position: relative;
+  cursor: pointer;
+  box-shadow:
+    0 10px 40px rgba(0,0,0,0.8),
+    0 2px 6px rgba(0,0,0,0.5);
+  transition: box-shadow 0.2s ease;
+  transform-style: preserve-3d;
+}
+
+.hand-slot:hover .mtg-card {
+  box-shadow:
+    0 28px 60px rgba(0,0,0,0.9),
+    0 0 40px rgba(201,168,76,0.25),
+    0 4px 12px rgba(0,0,0,0.6);
+}
+
+.card-outer-frame {
+  width: 100%;
+  height: 100%;
+  border-radius: 11px;
+  padding: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-outer-frame.color-white    { background: linear-gradient(155deg, #f0e8c0, #c8a840, #8a7030); }
+.card-outer-frame.color-blue     { background: linear-gradient(155deg, #c0d8f0, #4890d0, #1a4a8a); }
+.card-outer-frame.color-black    { background: linear-gradient(155deg, #5a5a6a, #2a2a3a, #050510); }
+.card-outer-frame.color-red      { background: linear-gradient(155deg, #f0c090, #c06030, #7a2008); }
+.card-outer-frame.color-green    { background: linear-gradient(155deg, #a8d098, #5aaa4a, #0a5a0a); }
+.card-outer-frame.color-gold     { background: linear-gradient(155deg, #ece090, #c8a830, #7a6010); }
+.card-outer-frame.color-artifact { background: linear-gradient(155deg, #d0d8e0, #9098a8, #485060); }
+
+.card-body {
+  width: 100%;
+  height: 100%;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 6px;
+  min-height: 24px;
+  flex-shrink: 0;
+}
+
+.card-title-row.band-white    { background: linear-gradient(90deg, #e8e0a0, #c8b060, #e8e0a0); }
+.card-title-row.band-blue     { background: linear-gradient(90deg, #98b8d8, #5088c0, #98b8d8); }
+.card-title-row.band-black    { background: linear-gradient(90deg, #484858, #202030, #484858); }
+.card-title-row.band-red      { background: linear-gradient(90deg, #c89070, #a04020, #c89070); }
+.card-title-row.band-green    { background: linear-gradient(90deg, #78b068, #308030, #78b068); }
+.card-title-row.band-gold     { background: linear-gradient(90deg, #d0b860, #a07828, #d0b860); }
+.card-title-row.band-artifact { background: linear-gradient(90deg, #b8c0c8, #8890a8, #b8c0c8); }
+
+.card-name {
+  font-family: 'Cinzel', serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--ink);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.1;
+}
+
+.card-title-row.band-black .card-name {
+  color: #d8d0a8;
+}
+
+.mana-row {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+  margin-left: 3px;
+}
+
+.mana-pip {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 700;
+  font-family: 'Cinzel', serif;
+  border: 1.5px solid rgba(0,0,0,0.45);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.pip-W { background: radial-gradient(circle at 40% 35%, #fffde0, #cdb850); color: #3a3000; }
+.pip-U { background: radial-gradient(circle at 40% 35%, #b8d8f8, #1868b8); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.7); }
+.pip-B { background: radial-gradient(circle at 40% 35%, #807880, #181828); color: #ddd; text-shadow: 0 1px 2px rgba(0,0,0,0.9); }
+.pip-R { background: radial-gradient(circle at 40% 35%, #f8a870, #a02808); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.7); }
+.pip-G { background: radial-gradient(circle at 40% 35%, #88d080, #186018); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.7); }
+.pip-C { background: radial-gradient(circle at 40% 35%, #d8e0f0, #5870a0); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.7); }
+
+.card-art-frame {
+  margin: 0 5px;
+  flex: 0 0 110px;
+  border: 2px solid rgba(0,0,0,0.55);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.art-background {
+  position: absolute;
+  inset: 0;
+}
+
+.art-bg-white    { background: radial-gradient(ellipse, #f5e880, #b09030); }
+.art-bg-blue     { background: radial-gradient(ellipse, #0a2a6a, #040820); }
+.art-bg-black    { background: radial-gradient(ellipse, #200828, #020005); }
+.art-bg-red      { background: radial-gradient(ellipse, #6a1000, #1a0400); }
+.art-bg-green    { background: radial-gradient(ellipse, #0a4a0a, #010f01); }
+.art-bg-gold     { background: radial-gradient(ellipse, #4a3800, #120e00); }
+.art-bg-artifact { background: radial-gradient(ellipse, #2a3848, #080e18); }
+
+.art-emoji {
+  font-size: 50px;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 3px 8px rgba(0,0,0,0.6));
+  transition: transform 0.3s ease;
+  line-height: 1;
+}
+
+.hand-slot:hover .art-emoji {
+  transform: scale(1.1);
+}
+
+.card-type-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 3px 5px;
+  padding: 2px 5px;
+  font-family: 'Cinzel', serif;
+  font-size: 7.5px;
+  font-weight: 600;
+  color: var(--ink);
+  border-top: 1px solid rgba(0,0,0,0.2);
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  flex-shrink: 0;
+}
+
+.card-type-row.band-white    { background: linear-gradient(90deg, #e0d898, #c0a850, #e0d898); }
+.card-type-row.band-blue     { background: linear-gradient(90deg, #90a8d0, #4878b8, #90a8d0); }
+.card-type-row.band-black    { background: linear-gradient(90deg, #404050, #181828, #404050); color: #d0c8a0; }
+.card-type-row.band-red      { background: linear-gradient(90deg, #c08060, #983818, #c08060); }
+.card-type-row.band-green    { background: linear-gradient(90deg, #70a860, #287828, #70a860); }
+.card-type-row.band-gold     { background: linear-gradient(90deg, #c8b060, #987020, #c8b060); }
+.card-type-row.band-artifact { background: linear-gradient(90deg, #b0b8c0, #8088a0, #b0b8c0); }
+
+.set-symbol {
+  font-size: 9px;
+  flex-shrink: 0;
+}
+
+.card-text-box {
+  flex: 1;
+  margin: 0 5px 3px;
+  padding: 4px 5px;
+  background: rgba(245,236,210,0.88);
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.ability-line {
+  font-size: 7.5px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.ability-keyword {
+  font-weight: 700;
+  font-style: italic;
+}
+
+.flavor-text {
+  font-style: italic;
+  font-size: 7px;
+  color: #3a3020;
+  border-top: 1px solid rgba(0,0,0,0.12);
+  padding-top: 3px;
+  margin-top: auto;
+  line-height: 1.4;
+}
+
+.card-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1px 7px 3px;
+  flex-shrink: 0;
+}
+
+.collector-info {
+  font-size: 6px;
+  color: rgba(0,0,0,0.4);
+  font-family: 'Cinzel', serif;
+}
+
+.power-box {
+  background: rgba(245,236,210,0.92);
+  border: 1.5px solid rgba(0,0,0,0.3);
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-family: 'Cinzel', serif;
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.shimmer-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: 11px;
+  background: linear-gradient(
+    108deg,
+    transparent 38%,
+    rgba(255,255,255,0.1) 50%,
+    transparent 62%
+  );
+  background-size: 200% 200%;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 0.2s;
+}
+
+.hand-slot:hover .shimmer-layer {
+  opacity: 1;
+  animation: foil-shimmer 1.8s ease infinite;
+}
+
+@keyframes foil-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

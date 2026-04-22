@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --gold: #c9a84c;
+  --gold-bright: #e8c96d;
+  --gold-dim: #8a6a1a;
+  --wood-dark: #1a0d05;
+  --wood-mid: #2e1708;
+  --wood-light: #5a3010;
+  --wood-highlight: #7a4820;
+  --felt-far: #2d6e30;
+  --felt-mid: #1a4a1a;
+  --felt-near: #0d2a0d;
+  --parchment: #f5ecd2;
+  --ink: #1a1200;
+}
+
+body {
+  font-family: 'Crimson Text', serif;
+  background: var(--wood-dark);
+  height: 100vh;
+  overflow: hidden;
+  user-select: none;
+}
+
+button {
+  font-family: 'Crimson Text', serif;
+  cursor: pointer;
+}
