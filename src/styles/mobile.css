@@ -1,0 +1,365 @@
+.mobile-scene {
+  min-height: 100vh;
+  overflow-y: auto;
+  background: radial-gradient(ellipse at 50% 0%, #2d6e30 0%, #1a4a1a 40%, #0d1a0d 100%);
+}
+
+.mobile-header {
+  text-align: center;
+  padding: 36px 20px 28px;
+}
+
+.pack-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  min-height: 62vh;
+  position: relative;
+}
+
+.booster-pack {
+  width: 200px;
+  height: 320px;
+  border-radius: 10px;
+  border: 2px solid rgba(201,168,76,0.6);
+  background: linear-gradient(160deg, #0a0a20 0%, #1a0a30 40%, #0a1428 100%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.8),
+    0 0 30px rgba(100,60,200,0.3);
+  cursor: grab;
+  touch-action: none;
+  animation: pack-float 3s ease-in-out infinite;
+}
+
+@keyframes pack-float {
+  0%, 100% { transform: translateY(0px); box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 20px rgba(100,60,200,0.2); }
+  50%       { transform: translateY(-8px); box-shadow: 0 28px 70px rgba(0,0,0,0.8), 0 0 50px rgba(140,80,255,0.45), 0 0 80px rgba(201,168,76,0.15); }
+}
+
+.booster-pack:active {
+  cursor: grabbing;
+  animation: none;
+}
+
+.tear-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.pack-half {
+  width: 200px;
+  height: 320px;
+  border-radius: 10px;
+  background: linear-gradient(160deg, #0a0a20 0%, #1a0a30 40%, #0a1428 100%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: absolute;
+  border: 2px solid rgba(201,168,76,0.6);
+}
+
+.pack-half-top {
+  clip-path: polygon(
+    0% 0%, 100% 0%, 100% 47%,
+    94% 49%, 88% 46%, 81% 50%, 74% 47%, 67% 51%,
+    60% 48%, 53% 52%, 46% 47%, 39% 49%, 32% 47%,
+    25% 51%, 18% 47%, 11% 50%, 5% 48%, 0% 49%
+  );
+}
+
+.pack-half-bottom {
+  clip-path: polygon(
+    0% 49%, 5% 48%, 11% 50%, 18% 47%, 25% 51%,
+    32% 47%, 39% 49%, 46% 47%, 53% 52%, 60% 48%,
+    67% 51%, 74% 47%, 81% 50%, 88% 46%, 94% 49%,
+    100% 47%, 100% 100%, 0% 100%
+  );
+}
+
+.pack-fly-up {
+  animation: fly-up 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.pack-fly-down {
+  animation: fly-down 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fly-up {
+  from { transform: translateY(0) rotate(0deg); opacity: 1; }
+  to   { transform: translateY(-280px) rotate(-18deg); opacity: 0; }
+}
+
+@keyframes fly-down {
+  from { transform: translateY(0) rotate(0deg); opacity: 1; }
+  to   { transform: translateY(280px) rotate(14deg); opacity: 0; }
+}
+
+.pack-flash {
+  position: fixed;
+  inset: 0;
+  background: white;
+  z-index: 100;
+  animation: flash-out 0.35s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes flash-out {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.pack-foil {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    75deg,
+    transparent 0px, transparent 8px,
+    rgba(255,255,255,0.03) 8px, rgba(255,255,255,0.03) 9px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.pack-top-strip {
+  background: linear-gradient(90deg, #8a6a1a, #c9a84c, #e8c96d, #c9a84c, #8a6a1a);
+  color: #1a1200;
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-align: center;
+  padding: 5px 4px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.pack-art-window {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pack-art-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(120,80,220,0.3) 0%, transparent 70%);
+}
+
+.pack-symbol {
+  font-size: 80px;
+  color: rgba(201,168,76,0.9);
+  text-shadow: 0 0 20px rgba(201,168,76,0.6), 0 0 50px rgba(201,168,76,0.3);
+  position: relative;
+  z-index: 2;
+}
+
+.pack-name-area {
+  padding: 10px 12px 8px;
+  border-top: 1px solid rgba(201,168,76,0.25);
+  position: relative;
+  z-index: 2;
+}
+
+.pack-player-name {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold-bright);
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.pack-edition {
+  font-family: 'Cinzel', serif;
+  font-size: 7px;
+  color: rgba(201,168,76,0.5);
+  text-align: center;
+  letter-spacing: 0.1em;
+  margin-top: 3px;
+}
+
+.pack-bottom-strip {
+  background: linear-gradient(90deg, #1a0a30, #2a1050, #1a0a30);
+  border-top: 1px solid rgba(201,168,76,0.3);
+  color: rgba(201,168,76,0.6);
+  font-family: 'Cinzel', serif;
+  font-size: 7px;
+  letter-spacing: 0.2em;
+  text-align: center;
+  padding: 5px 4px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.pack-tap-hint {
+  margin-top: 24px;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  color: rgba(201,168,76,0.55);
+  letter-spacing: 0.12em;
+  transition: opacity 0.2s;
+  animation: hint-fade 1.8s ease-in-out infinite;
+}
+
+@keyframes hint-fade {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+
+.reveal-stage {
+  padding: 0 0 60px;
+}
+
+.reveal-label {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  color: rgba(201,168,76,0.45);
+  letter-spacing: 0.2em;
+  text-align: center;
+  padding: 12px 0 16px;
+  text-transform: uppercase;
+}
+
+.reveal-scroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 16px 28px 32px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.reveal-scroll::-webkit-scrollbar { display: none; }
+
+.flip-wrapper {
+  flex-shrink: 0;
+  width: 200px;
+  height: 280px;
+  perspective: 900px;
+  scroll-snap-align: center;
+  animation: card-arrive 0.5s ease backwards;
+}
+
+@keyframes card-arrive {
+  from { opacity: 0; transform: translateY(50px) scale(0.9); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.flip-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flip-wrapper.flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.card-back-face,
+.card-front-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 11px;
+}
+
+.card-front-face {
+  transform: rotateY(180deg);
+}
+
+.card-front-face .mtg-card {
+  width: 200px;
+  height: 280px;
+}
+
+.card-front-face .card-name      { font-size: 8.5px; }
+.card-front-face .mana-pip       { width: 14px; height: 14px; font-size: 7px; }
+.card-front-face .card-art-frame { flex: 0 0 100px; }
+.card-front-face .art-emoji      { font-size: 44px; }
+.card-front-face .card-type-row  { font-size: 7px; }
+.card-front-face .ability-line   { font-size: 7px; }
+.card-front-face .flavor-text    { font-size: 6.2px; }
+.card-front-face .collector-info { font-size: 5.5px; }
+
+.card-back-face {
+  background: linear-gradient(160deg, #3a2a10 0%, #1a1408 100%);
+  border: 2.5px solid rgba(201,168,76,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+}
+
+.card-back-border {
+  width: 84%;
+  height: 88%;
+  border: 2px solid rgba(201,168,76,0.4);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #2a1a08, #120c04);
+}
+
+.card-back-oval {
+  width: 80%;
+  height: 75%;
+  border: 2px solid rgba(201,168,76,0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse, #1a3a1a 0%, #0a1a0a 100%);
+}
+
+.card-back-diamond {
+  width: 50px;
+  height: 50px;
+  border: 2px solid rgba(201,168,76,0.6);
+  transform: rotate(45deg);
+  background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.05));
+  box-shadow: 0 0 12px rgba(201,168,76,0.2);
+}
+
+@media (max-width: 768px) {
+  .modal-backdrop {
+    align-items: flex-start;
+    padding: 16px 12px;
+    overflow-y: auto;
+  }
+
+  .modal-panel {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    max-width: 100%;
+  }
+
+  .modal-card-large {
+    transform: scale(1.05);
+    margin-top: 0;
+  }
+
+  .modal-card-name { font-size: 1.2rem; text-align: center; }
+  .modal-card-type { text-align: center; }
+  .modal-details   { width: 100%; padding-top: 0; }
+  .modal-close-button { width: 100%; padding: 12px; }
+}

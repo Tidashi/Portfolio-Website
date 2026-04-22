@@ -129,15 +129,41 @@
   color: var(--gold-bright);
 }
 
-@media (max-width: 680px) {
+@media (max-width: 768px) {
+  .modal-backdrop {
+    align-items: flex-start;
+    padding: 16px 12px;
+    overflow-y: auto;
+  }
+
   .modal-panel {
     flex-direction: column;
     align-items: center;
     gap: 24px;
+    max-width: 100%;
   }
 
   .modal-card-large {
-    transform: scale(1.12);
+    transform: scale(1.05);
     margin-top: 0;
+  }
+
+  .modal-card-name {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .modal-card-type {
+    text-align: center;
+  }
+
+  .modal-details {
+    width: 100%;
+    padding-top: 0;
+  }
+
+  .modal-close-button {
+    width: 100%;
+    padding: 12px;
   }
 }
